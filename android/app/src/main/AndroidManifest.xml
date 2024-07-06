@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
  <uses-permission android:name="android.permission.INTERNET"/> <!-- Add this line for internet permission -->
     <application
-        android:label="Spud Health"
+        android:label="CountPro"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
                   left: 160, // Adjust the left position of the text
                   bottom: 80, // Adjust the bottom position of the text
                   child: Text(
-                    'Hey,  I  am  EcoRanger.\nLet\'s  Sort  the\n and \nRecycle it Together!',
+                    'Hey,  I  am  EcoRanger.\nLet\'s  Sort and \nRecycle it Together!',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.brown,
@@ -42,7 +42,7 @@ class SplashScreen extends StatelessWidget {
               child: Image.asset(
                 'assets/images/recycle.png',
                 width: 550,
-                height: 350,
+                height: 300,
               ),
             ),
             // Text(
@@ -53,7 +53,7 @@ class SplashScreen extends StatelessWidget {
             //     color: Colors.green[400],
             //   ),
             // ),
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
             TextButton(
               onPressed: () {
                 Navigator.pushReplacement(

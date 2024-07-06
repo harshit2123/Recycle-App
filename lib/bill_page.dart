@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:disease/prediction.dart';
+import 'package:disease/spashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
@@ -80,7 +81,10 @@ class _BillPageState extends State<BillPage> {
                         IconButton(
                           icon: Icon(Icons.arrow_back, color: Colors.black),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => SplashScreen()),
+                            );
                           },
                         ),
                         Text(

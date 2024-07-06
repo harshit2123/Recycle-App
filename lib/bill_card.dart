@@ -51,6 +51,7 @@ class _BillCardUIState extends State<BillCardUI> {
                 softWrap: false,
               ),
             ),
+            Spacer(),
             Expanded(
               child: Text(
                 '$count',
