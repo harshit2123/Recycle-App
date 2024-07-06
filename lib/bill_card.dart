@@ -46,30 +46,35 @@ class _BillCardUIState extends State<BillCardUI> {
             Expanded(
               child: Text(
                 '$itemName',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 14, color: Colors.white),
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
               ),
             ),
-            Spacer(),
+            SizedBox(
+              width: 60,
+            ),
+            // Spacer(),
             Expanded(
               child: Text(
                 '$count',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
-            Spacer(),
+            SizedBox(
+              width: 30,
+            ),
             Expanded(
               child: Text(
                 '\$${price.toStringAsFixed(2)}', // Show price with two decimal places
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
             Spacer(),
             Expanded(
               child: Text(
                 '\$${(price * count).toStringAsFixed(2)}', // Show total with two decimal places
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             ),
           ],
@@ -281,7 +286,7 @@ class _BillCardUIState extends State<BillCardUI> {
                 count = bottleController.text.isNotEmpty
                     ? int.tryParse(bottleController.text) ?? 0
                     : 0;
-                price = 0.2; // Assuming the price for the bottle is $2.99
+                price = 0.1; // Assuming the price for the bottle is $2.99
 
                 return _buildBreakdownCard(itemName, count, price);
               },

@@ -50,7 +50,7 @@ class _MainDashboardState extends State<MainDashboard> {
 
   void _startCapturing() {
     _timer =
-        Timer.periodic(Duration(seconds: 2), (_) => _captureAndSendImage());
+        Timer.periodic(Duration(seconds: 1), (_) => _captureAndSendImage());
   }
 
   Future<void> _captureAndSendImage() async {
