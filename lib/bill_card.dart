@@ -40,41 +40,38 @@ class _BillCardUIState extends State<BillCardUI> {
       child: Padding(
         padding: EdgeInsets.all(8),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
+              flex: 3,
               child: Text(
-                '$itemName',
+                itemName,
                 style: TextStyle(fontSize: 14, color: Colors.white),
                 overflow: TextOverflow.ellipsis,
-                softWrap: false,
               ),
             ),
-            SizedBox(
-              width: 60,
-            ),
-            // Spacer(),
             Expanded(
+              flex: 1,
               child: Text(
-                '$count',
+                count.toString(),
                 style: TextStyle(fontSize: 14, color: Colors.white),
+                textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(
-              width: 30,
-            ),
             Expanded(
+              flex: 2,
               child: Text(
-                '\$${price.toStringAsFixed(2)}', // Show price with two decimal places
+                '\$${price.toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 14, color: Colors.white),
+                textAlign: TextAlign.center,
               ),
             ),
-            Spacer(),
             Expanded(
+              flex: 2,
               child: Text(
-                '\$${(price * count).toStringAsFixed(2)}', // Show total with two decimal places
+                '\$${(price * count).toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 14, color: Colors.white),
+                textAlign: TextAlign.right,
               ),
             ),
           ],
@@ -281,7 +278,7 @@ class _BillCardUIState extends State<BillCardUI> {
                 late double price;
 
                 // We only have one item (Bottle) for now, so we assume index is always 0
-                itemName = 'Bottle';
+                itemName = 'Plastic Bottles';
                 // Check if the text is empty or not a valid integer before parsing
                 count = bottleController.text.isNotEmpty
                     ? int.tryParse(bottleController.text) ?? 0
