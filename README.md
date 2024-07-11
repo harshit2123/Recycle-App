@@ -1,4 +1,4 @@
-# disease
+# CountPro- Fluuter app to sort and identify objects for recycling
 
 A new Flutter project.
 
