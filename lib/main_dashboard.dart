@@ -151,11 +151,9 @@ class _MainDashboardState extends State<MainDashboard> {
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _buildCameraUI();
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
+          return snapshot.connectionState == ConnectionState.done
+              ? _buildCameraUI()
+              : const Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -171,53 +169,92 @@ class _MainDashboardState extends State<MainDashboard> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Capturing Image',
-                      style: TextStyle(color: Colors.black, fontSize: 18),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close, color: Colors.black),
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => SplashScreen()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                child: _buildTopBar(),
               ),
-              Expanded(
-                child: Center(
-                  child: Container(
-                    width: 250,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blue, width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Please align the items within the space',
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-              if (_processing)
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+              Expanded(child: _buildCenterFrame()),
+              _buildBottomText(),
+              if (_processing) _buildProcessingIndicator(),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildTopBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildCapturingText(),
+        _buildCloseButton(),
+      ],
+    );
+  }
+
+  Widget _buildCapturingText() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: const Text(
+        'Capturing Image...',
+        style: TextStyle(color: Colors.black, fontSize: 18),
+      ),
+    );
+  }
+
+  Widget _buildCloseButton() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.close, color: Colors.black),
+        onPressed: () => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const SplashScreen()),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCenterFrame() {
+    return Center(
+      child: Container(
+        width: 250,
+        height: 250,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.blue, width: 2),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomText() {
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Text(
+        'Please align the items within the space',
+        style: TextStyle(color: Colors.blue),
+      ),
+    );
+  }
+
+  Widget _buildProcessingIndicator() {
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
+      child: CircularProgressIndicator(),
     );
   }
 }

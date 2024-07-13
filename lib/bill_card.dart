@@ -239,14 +239,14 @@ class _BillCardUIState extends State<BillCardUI> {
             children: [
               Expanded(
                 child: Text(
-                  'Article',
+                  '       Article',
                   style: TextStyle(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  'Qty.',
+                  '           Qty.',
                   style: TextStyle(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
