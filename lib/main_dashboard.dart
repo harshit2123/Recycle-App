@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'bill_page.dart';
+import 'prediction.dart';
 
 class MainDashboard extends StatefulWidget {
   @override
@@ -13,8 +14,7 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-  final _canController = TextEditingController();
-  final _bottleController = TextEditingController();
+  final Map<String, TextEditingController> _controllers = {};
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   Timer? _timer;
@@ -49,8 +49,7 @@ class _MainDashboardState extends State<MainDashboard> {
   }
 
   void _startCapturing() {
-    _timer =
-        Timer.periodic(Duration(seconds: 1), (_) => _captureAndSendImage());
+    _timer = Timer.periodic(Duration(seconds: 1), (_) => _captureAndSendImage());
   }
 
   Future<void> _captureAndSendImage() async {
@@ -68,8 +67,7 @@ class _MainDashboardState extends State<MainDashboard> {
     } catch (e) {
       print('Error capturing or sending image: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Error: Unable to process image. Please try again.")),
+        SnackBar(content: Text("Error: Unable to process image. Please try again.")),
       );
     } finally {
       setState(() {
@@ -80,39 +78,44 @@ class _MainDashboardState extends State<MainDashboard> {
 
   Future<void> _sendImageToServer(File imageFile) async {
     try {
-      var uri =
-          Uri.parse('https://recyclethree.azurewebsites.net/detect-objects/');
+      var uri = Uri.parse('https://recyclethree.azurewebsites.net/detect-objects/');
       var request = http.MultipartRequest('POST', uri);
-
+      
       request.files.add(await http.MultipartFile.fromPath(
         'file',
         imageFile.path,
         filename: 'image.jpg',
       ));
-
+      
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
-
+      
       if (response.statusCode == 200) {
         print('Image sent successfully');
         var jsonResponse = json.decode(response.body);
-
+        
+        Prediction prediction = Prediction.fromJson(jsonResponse);
+        
         setState(() {
-          _canController.text = jsonResponse['can'].toString();
-          _bottleController.text = jsonResponse['bottle'].toString();
+          // Update controllers based on the prediction
+          for (var object in prediction.objects) {
+            if (_controllers.containsKey(object.name)) {
+              _controllers[object.name]!.text = object.count.toString();
+            } else {
+              _controllers[object.name] = TextEditingController(text: object.count.toString());
+            }
+          }
         });
-
+        
         _timer?.cancel(); // Stop the timer
-
+        
         // Navigate to BillPage only if we have valid data
-        if (_canController.text.isNotEmpty &&
-            _bottleController.text.isNotEmpty) {
+        if (prediction.objects.isNotEmpty) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => BillPage(
-                canController: _canController,
-                bottleController: _bottleController,
+                prediction: prediction,
               ),
             ),
           );
@@ -125,14 +128,12 @@ class _MainDashboardState extends State<MainDashboard> {
       } else {
         print('Failed to send image. Status code: ${response.statusCode}');
         print('Response body: ${response.body}');
-        throw Exception(
-            'Failed to send image. Status code: ${response.statusCode}');
+        throw Exception('Failed to send image. Status code: ${response.statusCode}');
       }
     } catch (e) {
       print('Error sending image: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Error: Unable to process image. Please try again.")),
+        SnackBar(content: Text("Error: Unable to process image. Please try again.")),
       );
       _startCapturing(); // Restart capturing if there was an error
     }
@@ -142,6 +143,9 @@ class _MainDashboardState extends State<MainDashboard> {
   void dispose() {
     _timer?.cancel();
     _controller.dispose();
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 

@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          const SizedBox(height: 80),
+          const SizedBox(height: 55),
           _buildHeader(),
           Expanded(
             child: Center(
@@ -38,22 +38,22 @@ class SplashScreen extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.grey[400]!,
-            offset: const Offset(4, 4),
-            blurRadius: 15,
-            spreadRadius: 1,
+            offset: const Offset(0, 4),
+            blurRadius: 5,
+            spreadRadius: 2,
           ),
-          const BoxShadow(
-            color: Colors.white,
-            offset: Offset(-4, -4),
-            blurRadius: 15,
-            spreadRadius: 1,
-          ),
+          // const BoxShadow(
+          //   color: Colors.white,
+          //   offset: Offset(-4, -4),
+          //   blurRadius: 30,
+          //   spreadRadius: 1,
+          // ),
         ],
       ),
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.5),
         child: Text(
-          'Vik-Ram Environmental',
+          'Vik-Ram  Environmental',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class SplashScreen extends StatelessWidget {
   Widget _buildLogo() {
     return Image.asset(
       'assets/images/companylogo.png',
-      width: 400,
+      width: 380,
       height: 250,
     );
   }
@@ -98,7 +98,7 @@ class SplashScreen extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 18, vertical: 0),
         child: const Text(
-          'Tap To  Start',
+          'Tap To Start',
           style: TextStyle(
             fontSize: 18,
             color: Colors.white,
