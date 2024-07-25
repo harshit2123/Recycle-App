@@ -79,9 +79,9 @@ class _MainDashboardState extends State<MainDashboard> {
       print('Response data: ${response.data}');
       if (response.data is Map<String, dynamic>) {
         setState(() {
-          _prediction = Prediction.fromJson(response.data);
-          _canController.text = _prediction?.can.toString() ?? '';
-          _bottleController.text = _prediction?.bottle.toString() ?? '';
+          // _prediction = Prediction.fromJson(response.data);
+          // _canController.text = _prediction?.can.toString() ?? '';
+          // _bottleController.text = _prediction?.bottle.toString() ?? '';
         });
       } else {
         print('Unexpected response format: ${response.data}');
@@ -170,15 +170,15 @@ class _MainDashboardState extends State<MainDashboard> {
                       try {
                         await sendImage();
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BillPage(
-                              canController: _canController,
-                              bottleController: _bottleController,
-                            ),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context
+                        //   // MaterialPageRoute(
+                        //   //   // builder: (context) => BillPage(
+                        //   //   //   canController: _canController,
+                        //   //   //   bottleController: _bottleController,
+                        //   //   // ),
+                        //   // ),
+                        // );
                       } catch (e) {
                         print('Error: $e');
                       }

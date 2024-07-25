@@ -85,19 +85,19 @@ class _MainDashboardState extends State<MainDashboard> {
 
       var response = await request.send();
 
-      if (response.statusCode == 200) {
-        print('Image sent successfully');
-        // Navigate to BillPage with the controllers
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BillPage(
-                      canController: _canController,
-                      bottleController: _bottleController,
-                    )));
-      } else {
-        print('Failed to send image. Status code: ${response.statusCode}');
-      }
+      // if (response.statusCode == 200) {
+      //   print('Image sent successfully');
+      //   // Navigate to BillPage with the controllers
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //           builder: (context) => BillPage(
+      //                 canController: _canController,
+      //                 bottleController: _bottleController,
+      //               )));
+      // } else {
+      //   print('Failed to send image. Status code: ${response.statusCode}');
+      // }
     } catch (e) {
       print('Error sending image: $e');
     }
