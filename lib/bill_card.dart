@@ -1,19 +1,23 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:image_picker/image_picker.dart';
-import 'prediction.dart';
-import 'package:image_picker/image_picker.dart';
 
 class BillCardUI extends StatefulWidget {
-  final TextEditingController canController;
-  final TextEditingController bottleController;
+  final TextEditingController aluminiumCansController;
+  final TextEditingController gableTopController;
+  final TextEditingController glassBottleController;
+  final TextEditingController milkGallonController;
+  final TextEditingController plasticController;
+  final TextEditingController tetrapackController;
+  final TextEditingController objectController;
 
   const BillCardUI({
     Key? key,
-    required this.canController,
-    required this.bottleController,
+    required this.aluminiumCansController,
+    required this.gableTopController,
+    required this.glassBottleController,
+    required this.milkGallonController,
+    required this.plasticController,
+    required this.tetrapackController,
+    required this.objectController,
   }) : super(key: key);
 
   @override
@@ -21,54 +25,66 @@ class BillCardUI extends StatefulWidget {
 }
 
 class _BillCardUIState extends State<BillCardUI> {
-  late final TextEditingController canController;
-  late final TextEditingController bottleController;
+  late final TextEditingController aluminiumCansController;
+  late final TextEditingController gableTopController;
+  late final TextEditingController glassBottleController;
+  late final TextEditingController milkGallonController;
+  late final TextEditingController plasticController;
+  late final TextEditingController tetrapackController;
+  late final TextEditingController objectController;
 
   @override
   void initState() {
     super.initState();
-    // Assign the provided controllers or initialize new ones if not provided
-    canController = widget.canController;
-    bottleController = widget.bottleController;
+    aluminiumCansController = widget.aluminiumCansController;
+    gableTopController = widget.gableTopController;
+    glassBottleController = widget.glassBottleController;
+    milkGallonController = widget.milkGallonController;
+    plasticController = widget.plasticController;
+    tetrapackController = widget.tetrapackController;
+    objectController = widget.objectController;
   }
 
-  Card _buildBreakdownCard(String itemName, int count, double price) {
+  Widget _buildBreakdownCard(String itemName, int count, double price) {
     return Card(
       color: Colors.lightGreen,
       elevation: 5,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
+              flex: 3,
               child: Text(
-                '$itemName',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                itemName,
+                style: const TextStyle(fontSize: 14, color: Colors.white),
                 overflow: TextOverflow.ellipsis,
-                softWrap: false,
               ),
             ),
             Expanded(
+              flex: 1,
               child: Text(
-                '$count',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                count.toString(),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+                textAlign: TextAlign.center,
               ),
             ),
-            Spacer(),
             Expanded(
+              flex: 2,
               child: Text(
-                '\$${price.toStringAsFixed(2)}', // Show price with two decimal places
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                '\$${price.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+                textAlign: TextAlign.center,
               ),
             ),
-            Spacer(),
             Expanded(
+              flex: 2,
               child: Text(
-                '\$${(price * count).toStringAsFixed(2)}', // Show total with two decimal places
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                '\$${(price * count).toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+                textAlign: TextAlign.right,
               ),
             ),
           ],
@@ -76,248 +92,103 @@ class _BillCardUIState extends State<BillCardUI> {
       ),
     );
   }
-// import 'dart:convert';
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-
-// import 'prediction.dart';
-
-// void main() => runApp(MyApp());
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Bill Card UI'),
-//         ),
-//         body: BillCardUI(),
-//         // floatingActionButton: FloatingActionButton(
-//         //   onPressed: () async {
-//         //     // Fetch prediction data
-//         //     final prediction = await fetchPrediction();
-//         //   },
-//         //   backgroundColor: Colors.teal[50],
-//         //   child: const Icon(Icons.share, color: Colors.black),
-//         // ),
-//       ),
-//     );
-//   }
-
-//   // Future<Prediction> fetchPrediction() async {
-//   //   final response =
-//   //       await http.get(Uri.parse('http://10.0.2.2:8000/detect-objects'));
-//   //   if (response.statusCode == 200) {
-//   //     return Prediction.fromJson(jsonDecode(response.body));
-//   //   } else {
-//   //     throw Exception('Failed to load prediction');
-//   //   }
-//   // }
-
-// }
-
-// class BillCardUI extends StatefulWidget {
-//   @override
-//   _BillCardUIState createState() => _BillCardUIState();
-// }
-
-// class _BillCardUIState extends State<BillCardUI> {
-//   // Define the map for item names and their frequencies
-//   Map<String, int> frequencyMap = {};
-
-//   int totalSquaredFrequency = 0;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   Card _buildBreakdownCard(String itemName, int frequency) {
-//     return Card(
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(25),
-//       ),
-//       color: Colors.lightGreen,
-//       elevation: 5,
-//       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//       child: Padding(
-//         padding: EdgeInsets.all(10),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'Item: $itemName',
-//               style: TextStyle(fontSize: 16, color: Colors.white),
-//             ),
-//             SizedBox(height: 5),
-//             Text(
-//               'Frequency: $_prediction!.can',
-//               style: TextStyle(fontSize: 16, color: Colors.white),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-  // Card _buildBreakdownCard(String itemName, int frequency) {
-  //   return Card(
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-  //     color: Colors.teal[50],
-  //     elevation: 0.0, // Remove shadow
-  //     child: Padding(
-  //       padding: EdgeInsets.all(8.0),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Expanded(
-  //             child: Text(
-  //               itemName, // Use itemName from frequencyMap
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ),
-  //           Expanded(
-  //             child: Text(
-  //               '$frequency', // Display frequency
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ),
-  //           Expanded(
-  //             child: Text(
-  //               '$frequency', // Display frequency
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ),
-  //           Expanded(
-  //             child: Text(
-  //               '${(frequency * frequency).toStringAsFixed(2)}',
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 15.0, right: 15.0),
+      margin: const EdgeInsets.only(left: 15.0, right: 15.0),
       height: 490,
       decoration: BoxDecoration(
-        color: Colors.teal[50], // Replace with your desired color
-        borderRadius: BorderRadius.only(
+        color: Colors.teal[50],
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(25.0),
           bottomRight: Radius.circular(25.0),
         ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 10.0,
             spreadRadius: 8,
-            offset: const Offset(0, 5),
+            offset: Offset(0, 5),
           ),
           BoxShadow(
             color: Colors.black26,
             blurRadius: 10.0,
             spreadRadius: 8,
-            offset: const Offset(-5, 0), // Shadow on the left
+            offset: Offset(-5, 0),
           ),
         ],
       ),
       child: Column(
         children: [
-          SizedBox(height: 10),
-          // Table header row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  'Article',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Qty.',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Price/Qty',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Price',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-          Divider(color: Colors.grey),
-          Container(
-            height: 350,
-            child: ListView.builder(
-              itemCount: 1,
-              itemBuilder: (context, index) {
-                late String itemName;
-                late int count;
-                late double price;
-
-                // We only have one item (Bottle) for now, so we assume index is always 0
-                itemName = 'Bottle';
-                // Check if the text is empty or not a valid integer before parsing
-                count = bottleController.text.isNotEmpty
-                    ? int.tryParse(bottleController.text) ?? 0
-                    : 0;
-                price = 0.2; // Assuming the price for the bottle is $2.99
-
-                return _buildBreakdownCard(itemName, count, price);
-              },
-              // itemBuilder: (context, index) {
-              //   late String itemName;
-              //   late int count;
-              //   late double price;
-
-              //   // Assigning price in dollars for both items
-              //   if (index == 0) {
-              //     itemName = 'Bottle';
-              //     // Check if the text is empty or not a valid integer before parsing
-              //     count = bottleController.text.isNotEmpty
-              //         ? int.tryParse(bottleController.text) ?? 0
-              //         : 0;
-              //     price = 2.99; // Assuming the price for the bottle is $2.99
-              //   } else {
-              //     itemName = 'Can';
-              //     // Check if the text is empty or not a valid integer before parsing
-              //     count = canController.text.isNotEmpty
-              //         ? int.tryParse(canController.text) ?? 0
-              //         : 0;
-              //     price = 1.99; // Assuming the price for the can is $1.99
-              //   }
-
-              //   return _buildBreakdownCard(itemName, count, price);
-              // },
-            ),
-          ),
-          SizedBox(height: 10),
-          // Text(
-          //   'Prediction Result:',
-          //   style: TextStyle(fontWeight: FontWeight.bold),
-          //   textAlign: TextAlign.center,
-          // ),
+          const SizedBox(height: 10),
+          _buildTableHeader(),
+          const Divider(color: Colors.grey),
+          _buildItemList(),
+          const SizedBox(height: 10),
         ],
       ),
     );
+  }
+
+  Widget _buildTableHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: const [
+        Expanded(
+          child: Text(
+            'Article',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        Expanded(
+          child: Text(
+            '         Qty.',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            'Price/Qty',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            'Price',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildItemList() {
+    return SizedBox(
+      height: 350,
+      child: ListView(
+        children: [
+          _buildItemCard('Aluminium Cans', aluminiumCansController, 0.05),
+          _buildItemCard('Gable Top', gableTopController, 0.05),
+          _buildItemCard('Glass Bottle', glassBottleController, 0.10),
+          _buildItemCard('Milk Gallon', milkGallonController, 0.20),
+          _buildItemCard('Plastic', plasticController, 0.05),
+          _buildItemCard('Tetrapack', tetrapackController, 0.05),
+        ].whereType<Widget>().toList(),
+      ),
+    );
+  }
+
+  Widget? _buildItemCard(
+      String itemName, TextEditingController controller, double price) {
+    int count = int.tryParse(controller.text) ?? 0;
+    return count != 0 ? _buildBreakdownCard(itemName, count, price) : null;
   }
 }

@@ -1,83 +1,113 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:disease/main_dashboard.dart';
+import 'main_dashboard.dart';
+import 'tesh_dashboard_code.dart';
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 100.0),
-                  child: Image.asset(
-                    'assets/images/logo4.png',
-                    width: 300,
-                    height: 300,
-                  ),
-                ),
-                const Positioned(
-                  left: 160, // Adjust the left position of the text
-                  bottom: 80, // Adjust the bottom position of the text
-                  child: Text(
-                    'Hey,  I  am  EcoRanger.\nLet\'s  Sort  the\n and \nRecycle it Together!',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.brown,
-                      fontWeight: FontWeight.bold,
-                      // fontFamily: 'Nunito',
-                      // backgroundColor: Colors.black.withOpacity(0.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0, bottom: 60),
-              child: Image.asset(
-                'assets/images/recycle.png',
-                width: 550,
-                height: 350,
+      body: Column(
+        children: [
+          const SizedBox(height: 80),
+          _buildHeader(),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildLogo(),
+                  _buildRecycleImage(),
+                  _buildStartButton(context),
+                  const SizedBox(height: 71),
+                ],
               ),
             ),
-            // Text(
-            //   'Your Recycler',
-            //   style: TextStyle(
-            //     fontSize: 20,
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.green[400],
-            //   ),
-            // ),
-            SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainDashboard()),
-                );
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.lightGreen),
-                elevation: MaterialStateProperty.all<double>(
-                    5), // Adjust the elevation as needed
-                shadowColor: MaterialStateProperty.all<Color>(
-                    Colors.grey[300]!), // Light grey shadow color
-              ),
-              child: const Text(
-                ' Tap To Sort ',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF0431A6),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[400]!,
+            offset: const Offset(4, 4),
+            blurRadius: 15,
+            spreadRadius: 1,
+          ),
+          const BoxShadow(
+            color: Colors.white,
+            offset: Offset(-4, -4),
+            blurRadius: 15,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.5),
+        child: Text(
+          'Test APP',
+          // 'Vik-Ram Environmental',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFF49B03),
+            letterSpacing: 1.5,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Image.asset(
+      'assets/images/companylogo.png',
+      width: 400,
+      height: 250,
+    );
+  }
+
+  Widget _buildRecycleImage() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0.0, bottom: 0),
+      child: Image.asset(
+        'assets/images/recycle.png',
+        width: 550,
+        height: 350,
+      ),
+    );
+  }
+
+  Widget _buildStartButton(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>
+       //  TestMainDashboard() //dashboard for the testing,
+             MainDashboard() //dashboard for the mainapp.
             ),
-          ],
+      ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightGreen),
+        elevation: MaterialStateProperty.all<double>(5),
+        shadowColor: MaterialStateProperty.all<Color>(Colors.grey[300]!),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 0),
+        child: const Text(
+          'Tap To  Start',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+          ),
         ),
       ),
     );
