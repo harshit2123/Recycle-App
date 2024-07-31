@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:disease/main_dashboard.dart';
+import 'main_dashboard.dart';
+import 'tesh_dashboard_code.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -53,7 +54,8 @@ class SplashScreen extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5.5),
         child: Text(
-          'Vik-Ram Environmental',
+          'Test APP',
+          // 'Vik-Ram Environmental',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -88,7 +90,10 @@ class SplashScreen extends StatelessWidget {
     return TextButton(
       onPressed: () => Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainDashboard()),
+        MaterialPageRoute(builder: (context) =>
+       //  TestMainDashboard() //dashboard for the testing,
+             MainDashboard() //dashboard for the mainapp.
+            ),
       ),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Colors.lightGreen),

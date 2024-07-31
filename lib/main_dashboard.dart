@@ -13,8 +13,16 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-  final _canController = TextEditingController();
-  final _bottleController = TextEditingController();
+// final _canController = TextEditingController();
+// final _bottleController = TextEditingController();
+  final _aluminiumCansController = TextEditingController();
+  final _gableTopController = TextEditingController();
+  final _glassBottleController = TextEditingController();
+  final _milkGallonController = TextEditingController();
+  final _plasticController = TextEditingController();
+  final _tetrapackController = TextEditingController();
+  final _objectController = TextEditingController();
+
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
   Timer? _timer;
@@ -25,6 +33,21 @@ class _MainDashboardState extends State<MainDashboard> {
   void initState() {
     super.initState();
     _initializeCamera();
+  }
+
+  void _resetState() {
+    setState(() {
+      _lastCapturedImage = null;
+      _processing = false;
+      _aluminiumCansController.clear();
+      _gableTopController.clear();
+      _glassBottleController.clear();
+      _milkGallonController.clear();
+      _plasticController.clear();
+      _tetrapackController.clear();
+      _objectController.clear();
+    });
+    _startCapturing();
   }
 
   Future<void> _initializeCamera() async {
@@ -81,7 +104,7 @@ class _MainDashboardState extends State<MainDashboard> {
   Future<void> _sendImageToServer(File imageFile) async {
     try {
       var uri =
-          Uri.parse('https://recyclethree.azurewebsites.net/detect-objects/');
+          Uri.parse('https://recycle22.azurewebsites.net/detect-objects/');
       var request = http.MultipartRequest('POST', uri);
 
       request.files.add(await http.MultipartFile.fromPath(
@@ -96,23 +119,45 @@ class _MainDashboardState extends State<MainDashboard> {
       if (response.statusCode == 200) {
         print('Image sent successfully');
         var jsonResponse = json.decode(response.body);
+       
+      //  print('Server response: ${response.body}');  // Printed the response for debugging
 
         setState(() {
-          _canController.text = jsonResponse['can'].toString();
-          _bottleController.text = jsonResponse['bottle'].toString();
+          // _canController.text = jsonResponse['can'].toString();
+          // _bottleController.text = jsonResponse['bottle'].toString();
+          _aluminiumCansController.text = jsonResponse['Aluminium Cans'].toString();
+          _gableTopController.text = jsonResponse['Gable Top'].toString();
+          _glassBottleController.text = jsonResponse['Glass Bottle'].toString();
+          _milkGallonController.text = jsonResponse['Milk Gallon'].toString();
+          _plasticController.text = jsonResponse['Plastic'].toString();
+          _tetrapackController.text = jsonResponse['Tetrapack'].toString();
+          _objectController.text = jsonResponse['Object'].toString();
         });
 
         _timer?.cancel(); // Stop the timer
 
-        // Navigate to BillPage only if we have valid data
-        if (_canController.text.isNotEmpty &&
-            _bottleController.text.isNotEmpty) {
+        // Check if all values are 0
+        bool allZero = jsonResponse.values.every((value) => value == 0);
+
+        if (!allZero &&
+            _aluminiumCansController.text.isNotEmpty &&
+            _gableTopController.text.isNotEmpty &&
+            _glassBottleController.text.isNotEmpty &&
+            _milkGallonController.text.isNotEmpty &&
+            _plasticController.text.isNotEmpty &&
+            _tetrapackController.text.isNotEmpty &&
+            _objectController.text.isNotEmpty) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => BillPage(
-                canController: _canController,
-                bottleController: _bottleController,
+                aluminiumCansController: _aluminiumCansController,
+                gableTopController: _gableTopController,
+                glassBottleController: _glassBottleController,
+                milkGallonController: _milkGallonController,
+                plasticController: _plasticController,
+                tetrapackController: _tetrapackController,
+                objectController: _objectController,
               ),
             ),
           );
@@ -146,15 +191,22 @@ class _MainDashboardState extends State<MainDashboard> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? _buildCameraUI()
-              : const Center(child: CircularProgressIndicator());
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        _resetState();
+        return true;
+      },
+      child: Scaffold(
+        body: FutureBuilder<void>(
+          future: _initializeControllerFuture,
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.done
+                ? _buildCameraUI()
+                : const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
@@ -221,9 +273,12 @@ class _MainDashboardState extends State<MainDashboard> {
       ),
       child: IconButton(
         icon: const Icon(Icons.close, color: Colors.black),
-        onPressed: () => Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const SplashScreen()),
-        ),
+        onPressed: () {
+          _resetState();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const SplashScreen()),
+          );
+        },
       ),
     );
   }
